@@ -19,7 +19,8 @@
     "homepage": "https://github.com/hittaito/three-practice#readme",
     "dependencies": {
         "assets": "^3.0.1",
-        "three": "^0.133.1"
+        "three": "^0.133.1",
+        "webfontloader": "^1.6.28"
     },
     "devDependencies": {
         "@parcel/transformer-glsl": "^2.0.0-rc.0",
@@ -27,6 +28,7 @@
         "@types/gl-matrix": "^3.2.0",
         "@types/stats.js": "^0.17.0",
         "@types/three": "^0.132.2",
+        "@types/webfontloader": "^1.6.33",
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "@typescript-eslint/parser": "^4.33.0",
         "eslint": "^7.32.0",
