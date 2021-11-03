@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "parcel src/*/*.html assets/*.png --dist-dir dev --port 11234"
+        "dev": "parcel src/*/*.html assets/*.png assets/*.jpg --dist-dir dev --port 11234"
     },
     "repository": {
         "type": "git",
@@ -25,6 +25,7 @@
     "devDependencies": {
         "@parcel/transformer-glsl": "^2.0.0-rc.0",
         "@parcel/transformer-image": "^2.0.0-rc.0",
+        "@types/dat.gui": "^0.7.7",
         "@types/gl-matrix": "^3.2.0",
         "@types/stats.js": "^0.17.0",
         "@types/three": "^0.132.2",
