@@ -23,13 +23,16 @@ export default class FlowField {
     renderTargets: THREE.WebGLRenderTarget[];
     primary = 0;
     count: number;
+    positions: Float32Array;
     width = 256;
     height = 4096;
-    constructor(count: number, renderer: THREE.WebGLRenderer, scene: THREE.Scene) {
+    constructor(positions: Float32Array, renderer: THREE.WebGLRenderer, scene: THREE.Scene) {
         this.scene = scene;
         this.renderer = renderer;
 
-        this.count = count;
+        this.count = positions.length / 3;
+        this.positions = positions;
+
         this.height = Math.ceil(this.count / this.width);
 
         gui.addFolder('FlowField');
@@ -49,9 +52,9 @@ export default class FlowField {
         const data = new Float32Array(size * 4);
         const color = new THREE.Color(0xffffff);
         for (let i = 0; i < size; i++) {
-            data[i * 4] = Math.random() - 0.5;
-            data[i * 4 + 1] = Math.random() - 0.5;
-            data[i * 4 + 2] = Math.random() - 0.5;
+            data[i * 4] = this.positions[i * 3];
+            data[i * 4 + 1] = this.positions[i * 3 + 1];
+            data[i * 4 + 2] = this.positions[i * 3 + 2];
             data[i * 4 + 3] = Math.random();
         }
         this.baseTexture = new THREE.DataTexture(data, this.width, this.height, THREE.RGBAFormat, THREE.FloatType);
@@ -95,11 +98,11 @@ export default class FlowField {
                 uBaseTexture: { value: this.baseTexture },
                 uTexture: { value: this.baseTexture },
                 uTime: { value: 0 },
-                uPerlinFrequency: { value: 0.63 },
-                uPerlinMultiplier: { value: 0.039 },
-                uTimeFrequency: { value: 0.001 },
+                uPerlinFrequency: { value: 2.914 },
+                uPerlinMultiplier: { value: 0.008 },
+                uTimeFrequency: { value: 0.0038 },
                 uDelta: { value: 16 },
-                uDecaySpeed: { value: 0.00141 },
+                uDecaySpeed: { value: 0.0005 },
                 uColor: { value: color },
             },
         });

@@ -10,27 +10,38 @@ export default class Particles {
     material: THREE.ShaderMaterial;
     points: THREE.Points;
     flowField: FlowField;
-    count = 1000;
+    positions: Float32Array;
+    count = 3000;
     constructor(scene: THREE.Scene, renderer: THREE.WebGLRenderer) {
         this.scene = scene;
+        this.setPositions();
         this.setFlowField(scene, renderer);
         this.setGeometry();
         this.setMaterial();
         this.setPoints();
     }
-    setFlowField(scene: THREE.Scene, renderer: THREE.WebGLRenderer) {
-        this.flowField = new FlowField(this.count, renderer, scene);
-    }
-    setGeometry() {
+    setPositions() {
         this.geometry = new THREE.BufferGeometry();
         const position = new Float32Array(this.count * 3);
         for (let i = 0; i < this.count; i++) {
-            position[i * 3 + 0] = (Math.random() - 0.5) * 2;
-            position[i * 3 + 1] = (Math.random() - 0.5) * 2;
-            position[i * 3 + 2] = (Math.random() - 0.5) * 2;
+            const angle = Math.random() * Math.PI * 2;
+            position[i * 3 + 0] = Math.sin(angle);
+            position[i * 3 + 1] = Math.cos(angle);
+            position[i * 3 + 2] = 0;
+        }
+        this.positions = position;
+    }
+    setFlowField(scene: THREE.Scene, renderer: THREE.WebGLRenderer) {
+        this.flowField = new FlowField(this.positions, renderer, scene);
+    }
+    setGeometry() {
+        const sizes = new Float32Array(this.count);
+        for (let i = 0; i < this.count; i++) {
+            sizes[i] = 0.2 + Math.random() * 0.8;
         }
         this.geometry = new THREE.BufferGeometry();
-        this.geometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
+        this.geometry.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
+        this.geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
         this.geometry.setAttribute('fboUV', this.flowField.coordiname.attribute);
     }
     setMaterial() {

@@ -1,6 +1,7 @@
 uniform sampler2D uFBOTexture;
 uniform float uSize;
 attribute vec2 fboUV;
+attribute float aSize;
 // varying vec2 vUv;
 
 void main() {
@@ -11,6 +12,6 @@ void main() {
     gl_Position = projectionMatrix * viewPosition;
     float lifeSize = min((1. - fboColor.a) * 10., fboColor.a * 2.);
     lifeSize = clamp(lifeSize, .0, 1.);
-    gl_PointSize = uSize * lifeSize;
+    gl_PointSize = uSize * lifeSize * aSize;
     gl_PointSize *= (1. / -viewPosition.z);
 }
