@@ -10,3 +10,5 @@ three.js 練習用
 | day4 | distort           |
 | day5 | Doom portal [WIP] |
 | day6 | ripple effect     |
+| day7 |
+| day8 | line              |
