@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils';
 import frag from './glsl/main.frag';
 import vert from './glsl/main.vert';
 
@@ -28,17 +29,19 @@ class Main {
             glslVersion: THREE.GLSL3,
         });
         const mesh = new THREE.Mesh(g, m);
-        this.scene.add(mesh);
+        console.log(mesh);
+        //mesh.setD
+        THREE.TriangleStripDrawMode;
+        this.scene.add(new THREE.Mesh(g, m));
 
         console.log('en');
 
         const g2 = new THREE.BoxBufferGeometry(1, 1, 1);
         const m2 = new THREE.MeshBasicMaterial({ color: 0x445643 });
+        const tmp = new THREE.Mesh(g2, m2);
+        console.log(BufferGeometryUtils.toTrianglesDrawMode(g2, THREE.TriangleStripDrawMode));
         // this.scene.add(new THREE.Mesh(g2, m2));
 
-        console.log(mesh.matrixWorld);
-        console.log(this.camera.matrixWorldInverse);
-        console.log(this.camera.projectionMatrix);
         this.render();
     }
     render() {
