@@ -17,18 +17,17 @@
     "bugs": {
         "url": "https://github.com/hittaito/three-practice/issues"
     },
-    "homepage": "https://github.com/hittaito/three-practice#readme",
     "dependencies": {
         "lil-gui": "^0.17.0",
         "stats.js": "^0.17.0",
-        "three": "^0.143.0",
+        "three": "^0.144.0",
         "webfontloader": "^1.6.28"
     },
     "devDependencies": {
         "@types/gl-matrix": "^3.2.0",
         "@types/node": "^18.7.21",
         "@types/stats.js": "^0.17.0",
-        "@types/three": "^0.143.2",
+        "@types/three": "^0.144.0",
         "@types/webfontloader": "^1.6.33",
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "@typescript-eslint/parser": "^4.33.0",
