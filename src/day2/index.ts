@@ -8,7 +8,7 @@ import tFrag3 from './glsl/text3.frag';
 
 // ref https://qiita.com/uctakeoff/items/387f2271befb81734d18
 
-const SIZE = 512;
+const SIZE = 512 * 2;
 
 class Main {
     scene: THREE.Scene;
@@ -35,7 +35,7 @@ class Main {
         });
 
         setInterval(() => {
-            const n = Math.floor(Math.random() * 20) + 4;
+            const n = Math.floor(Math.random() * 10) + 4;
             const str = 'あいうえおかきくけこさしすせそ漢字カッコイイ';
             const text = Array.from(Array(n))
                 .map(() => str[Math.floor(Math.random() * str.length)])
