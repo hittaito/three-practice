@@ -17,12 +17,17 @@ class Main {
     sdf: SDFTexture;
     t: THREE.CanvasTexture;
 
-    panel: THREE.Mesh<THREE.PlaneBufferGeometry, THREE.RawShaderMaterial>;
+    panel: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
 
     renderer: THREE.WebGLRenderer;
     init() {
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(
+            75,
+            innerWidth / innerHeight,
+            0.1,
+            1000
+        );
         this.camera.position.set(0, 0, 10);
         this.camera.lookAt(0, 0, 0);
         this.renderer = new THREE.WebGLRenderer({ alpha: false });
@@ -48,7 +53,7 @@ class Main {
 
         this.sdf = new SDFTexture();
         this.sdf.init(texture.texture);
-        const geom = new THREE.PlaneBufferGeometry(10, 10);
+        const geom = new THREE.PlaneGeometry(10, 10);
         const mat = new THREE.RawShaderMaterial({
             fragmentShader: mFrag,
             vertexShader: mVert,
@@ -76,9 +81,9 @@ class SDFTexture {
     scene2: THREE.Scene;
     scene3: THREE.Scene;
 
-    mesh1: THREE.Mesh<THREE.PlaneBufferGeometry, THREE.RawShaderMaterial>;
-    mesh2: THREE.Mesh<THREE.PlaneBufferGeometry, THREE.RawShaderMaterial>;
-    mesh3: THREE.Mesh<THREE.PlaneBufferGeometry, THREE.RawShaderMaterial>;
+    mesh1: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
+    mesh2: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
+    mesh3: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
     camera: THREE.OrthographicCamera;
 
     t: THREE.CanvasTexture;
@@ -95,7 +100,10 @@ class SDFTexture {
         this.camera.position.set(0, 0, 10);
         this.camera.lookAt(0, 0, 0);
 
-        this.mrts = [new THREE.WebGLMultipleRenderTargets(SIZE, SIZE, 2), new THREE.WebGLMultipleRenderTargets(SIZE, SIZE, 2)];
+        this.mrts = [
+            new THREE.WebGLMultipleRenderTargets(SIZE, SIZE, 2),
+            new THREE.WebGLMultipleRenderTargets(SIZE, SIZE, 2),
+        ];
         this.mrts.forEach((target) => {
             target.texture.forEach((texture) => {
                 texture.minFilter = THREE.NearestFilter;
@@ -105,7 +113,7 @@ class SDFTexture {
         });
         this.target = new THREE.WebGLRenderTarget(SIZE, SIZE);
 
-        const geom = new THREE.PlaneBufferGeometry(2, 2);
+        const geom = new THREE.PlaneGeometry(2, 2);
         const mat1 = new THREE.RawShaderMaterial({
             fragmentShader: tFrag1,
             vertexShader: mVert,
@@ -201,7 +209,8 @@ class TextTexture {
         this.context.fillStyle = '#ffffff';
         text.split('').forEach((c, i) => {
             const x = (i % (SIZE / fontSize)) * fontSize + fontSize / 2;
-            const y = Math.floor(i / (SIZE / fontSize)) * fontSize + fontSize * 0.9;
+            const y =
+                Math.floor(i / (SIZE / fontSize)) * fontSize + fontSize * 0.9;
             this.context.fillText(c, x, y, fontSize);
         });
         this.texture.needsUpdate = true;

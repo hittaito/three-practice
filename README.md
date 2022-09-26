@@ -9,3 +9,4 @@ three.js 練習用
 | day3 | gaussian blur   |
 | day4 | line            |
 | day5 | transparent     |
+| day6 | fresnel         |
