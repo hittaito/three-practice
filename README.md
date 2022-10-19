@@ -10,3 +10,4 @@ three.js 練習用
 | day4 | line            |
 | day5 | transparent     |
 | day6 | fresnel         |
+| day7 | bloom           |

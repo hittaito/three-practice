@@ -19,6 +19,10 @@ export default class World {
         this.camera = webgl.camera;
         this.renderer = webgl.renderer;
         this.composer = webgl.composer;
+        const geom = new THREE.ConeGeometry(1.6, 7.5, 3);
+        console.log(geom);
+        console.log(geom.getAttribute('position'));
+        console.log(geom.getIndex());
 
         this.setUp();
     }
