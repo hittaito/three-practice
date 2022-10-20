@@ -14,7 +14,12 @@ class Main {
     gauss: GaussEffect;
     init() {
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(
+            75,
+            innerWidth / innerHeight,
+            0.1,
+            1000
+        );
         this.camera.position.set(0, 0, 5);
         this.camera.lookAt(0, 0, 0);
         this.renderer = new THREE.WebGLRenderer({ antialias: false });
@@ -30,7 +35,7 @@ class Main {
         const amb = new THREE.AmbientLight(0x333333);
         this.scene.add(amb);
 
-        const geom = new THREE.BoxBufferGeometry(1, 2, 3);
+        const geom = new THREE.BoxGeometry(1, 2, 3);
         const mat = new THREE.MeshLambertMaterial({ color: 0x9922ee });
         this.scene.add(new THREE.Mesh(geom, mat));
 
@@ -60,7 +65,10 @@ class GaussEffect {
         this.camera.position.set(0, 0, 10);
         this.camera.lookAt(0, 0, 0);
 
-        const buffer = new THREE.WebGLRenderTarget(innerWidth / 4, innerHeight / 4);
+        const buffer = new THREE.WebGLRenderTarget(
+            innerWidth / 4,
+            innerHeight / 4
+        );
         buffer.texture.type = THREE.FloatType;
         buffer.texture.minFilter = THREE.NearestFilter;
         buffer.texture.magFilter = THREE.NearestFilter;
@@ -69,7 +77,7 @@ class GaussEffect {
         this.scene1 = new THREE.Scene();
         this.scene2 = new THREE.Scene();
 
-        const g = new THREE.PlaneBufferGeometry(2, 2);
+        const g = new THREE.PlaneGeometry(2, 2);
         this.m1 = new THREE.RawShaderMaterial({
             vertexShader: cVert,
             fragmentShader: gFrag1,
@@ -92,7 +100,11 @@ class GaussEffect {
         });
         this.scene2.add(new THREE.Mesh(g, this.m2));
     }
-    render(renderer: THREE.WebGLRenderer, texture: THREE.Texture, target: THREE.WebGLRenderTarget | null) {
+    render(
+        renderer: THREE.WebGLRenderer,
+        texture: THREE.Texture,
+        target: THREE.WebGLRenderTarget | null
+    ) {
         renderer.setRenderTarget(this.buffers[1]);
         this.m1.uniforms.img.value = texture;
         renderer.render(this.scene1, this.camera);

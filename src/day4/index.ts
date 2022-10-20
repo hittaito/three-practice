@@ -10,7 +10,12 @@ class Main {
     renderer: THREE.WebGLRenderer;
     init() {
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+        this.camera = new THREE.PerspectiveCamera(
+            75,
+            innerWidth / innerHeight,
+            0.1,
+            1000
+        );
         this.camera.lookAt(0, 0, 0);
         this.camera.position.set(0, 0, 300);
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -32,8 +37,8 @@ class Main {
 
         console.log('en');
 
-        const g2 = new THREE.BoxBufferGeometry(1, 1, 1);
-        const m2 = new THREE.MeshBasicMaterial({ color: 0x445643 });
+        // const g2 = new THREE.BoxGeometry(1, 1, 1);
+        // const m2 = new THREE.MeshBasicMaterial({ color: 0x445643 });
         // this.scene.add(new THREE.Mesh(g2, m2));
 
         console.log(mesh.matrixWorld);
@@ -54,7 +59,8 @@ class Main {
         const indexes = new Uint16Array(nIndex);
 
         for (let i = 0; i < nSEGMENT; i++) {
-            const x = 50.0 * Math.sin(0.032 * i + 0.35) * Math.sin(-0.029 * i + 4.86); // x
+            const x =
+                50.0 * Math.sin(0.032 * i + 0.35) * Math.sin(-0.029 * i + 4.86); // x
             const y = 50.0 * Math.sin(i * 0.041 - 1.96);
             const z = 50.0 * Math.sin(i * 0.078 - 5.21);
 
@@ -81,10 +87,22 @@ class Main {
         const nextPos = [...positions, ...e, ...e];
 
         const geom = new THREE.BufferGeometry();
-        geom.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
-        geom.setAttribute('prevPos', new THREE.BufferAttribute(new Float32Array(prevPos), 3));
-        geom.setAttribute('nextPos', new THREE.BufferAttribute(new Float32Array(nextPos), 3));
-        geom.setAttribute('sign', new THREE.BufferAttribute(new Float32Array(signs), 1));
+        geom.setAttribute(
+            'position',
+            new THREE.BufferAttribute(new Float32Array(pos), 3)
+        );
+        geom.setAttribute(
+            'prevPos',
+            new THREE.BufferAttribute(new Float32Array(prevPos), 3)
+        );
+        geom.setAttribute(
+            'nextPos',
+            new THREE.BufferAttribute(new Float32Array(nextPos), 3)
+        );
+        geom.setAttribute(
+            'sign',
+            new THREE.BufferAttribute(new Float32Array(signs), 1)
+        );
         geom.setIndex(new THREE.BufferAttribute(new Uint16Array(indexes), 1));
         return geom;
     }

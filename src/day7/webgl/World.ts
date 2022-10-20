@@ -1,19 +1,15 @@
 import * as THREE from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
-
-import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-import { LuminosityShader } from 'three/examples/jsm/shaders/LuminosityShader';
-import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 import Cone from './models/Cone';
 import SampleModel from './models/sampleModel';
 import WebGL from './Webgl';
-import { SobelShader } from './shader/SobelShader';
 import Box from './models/Box';
-import { MergeShader } from './shader/MergeShader';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import Debug from './Debug';
+import { Gray } from './postprocess/Gray';
+import { View } from './postprocess/View';
+import { Edge } from './postprocess/Edge';
+import { Merge } from './postprocess/Merge';
+import { FXAA } from './postprocess/FXAA';
+import { Gauss } from './postprocess/Gauss';
 
 export default class World {
     scene: THREE.Scene;
@@ -21,8 +17,18 @@ export default class World {
     renderer: THREE.WebGLRenderer;
     mrt: THREE.WebGLMultipleRenderTargets;
 
-    mainComposer: EffectComposer;
-    composer2: EffectComposer;
+    target1: THREE.WebGLRenderTarget;
+    target2: THREE.WebGLRenderTarget;
+    target3: THREE.WebGLRenderTarget;
+
+    // postprocess
+    view: View;
+    gray: Gray;
+    edge1: Edge;
+    edge2: Edge;
+    merge: Merge;
+    fxaa: FXAA;
+    gauss: Gauss;
 
     sample: SampleModel;
     cone: Cone;
@@ -38,12 +44,18 @@ export default class World {
             webgl.size.height * Math.min(2, window.devicePixelRatio),
             2
         );
-        this.mainComposer = webgl.composer;
-        this.composer2 = new EffectComposer(webgl.renderer);
-        this.composer2.setSize(webgl.size.width, webgl.size.height);
-        this.composer2.setPixelRatio(Math.min(2, window.devicePixelRatio));
-        const renderPass = new RenderPass(this.scene, this.camera);
-        this.composer2.addPass(renderPass);
+        this.target1 = new THREE.WebGLRenderTarget(
+            webgl.size.width * Math.min(2, window.devicePixelRatio),
+            webgl.size.height * Math.min(2, window.devicePixelRatio)
+        );
+        this.target2 = new THREE.WebGLRenderTarget(
+            webgl.size.width * Math.min(2, window.devicePixelRatio),
+            webgl.size.height * Math.min(2, window.devicePixelRatio)
+        );
+        this.target3 = new THREE.WebGLRenderTarget(
+            webgl.size.width * Math.min(2, window.devicePixelRatio),
+            webgl.size.height * Math.min(2, window.devicePixelRatio)
+        );
 
         this.debug = webgl.debug;
 
@@ -53,73 +65,13 @@ export default class World {
         this.cone = new Cone();
         this.box = new Box();
 
-        // post process
-        this.mainComposer.readBuffer.texture = this.mrt.texture[0];
-        this.composer2.readBuffer.texture = this.mrt.texture[0];
-
-        // gray pass
-        const grayPass = new ShaderPass(LuminosityShader);
-        this.mainComposer.addPass(grayPass);
-        this.composer2.addPass(grayPass);
-
-        // create edge
-        const sobelPass1 = new ShaderPass(SobelShader);
-        sobelPass1.uniforms.uColor.value = new THREE.Vector3(1, 0, 0);
-        sobelPass1.uniforms.resolution.value.x =
-            window.innerWidth * window.devicePixelRatio;
-        sobelPass1.uniforms.resolution.value.y =
-            window.innerHeight * window.devicePixelRatio;
-        this.mainComposer.addPass(sobelPass1);
-
-        const sobelPass2 = new ShaderPass(SobelShader);
-        sobelPass2.uniforms.uColor.value = new THREE.Vector3(0, 0, 1);
-        sobelPass2.uniforms.resolution.value.x =
-            window.innerWidth * window.devicePixelRatio;
-        sobelPass2.uniforms.resolution.value.y =
-            window.innerHeight * window.devicePixelRatio;
-        this.composer2.addPass(sobelPass2);
-
-        // merge edge plane1
-        const mergePass1 = new ShaderPass(MergeShader);
-        mergePass1.uniforms.uImage.value = this.mrt.texture[1];
-        this.mainComposer.addPass(mergePass1);
-        this.composer2.addPass(mergePass1);
-
-        // const smaaPass = new SMAAPass(
-        //     window.innerWidth * this.renderer.getPixelRatio(),
-        //     window.innerHeight * this.renderer.getPixelRatio()
-        // );
-        // this.mainComposer.addPass(smaaPass);
-
-        const fxaaPass = new ShaderPass(FXAAShader);
-        fxaaPass.material.uniforms.resolution.value.x =
-            1 / (window.innerWidth * this.renderer.getPixelRatio());
-        fxaaPass.material.uniforms.resolution.value.y =
-            1 / (window.innerHeight * this.renderer.getPixelRatio());
-        this.mainComposer.addPass(fxaaPass);
-
-        const bloomPass = new UnrealBloomPass(
-            new THREE.Vector2(window.innerWidth, window.innerHeight),
-            1.5,
-            0,
-            0
-        );
-
-        bloomPass.renderToScreen = false;
-        this.mainComposer.addPass(bloomPass);
-        this.composer2.addPass(bloomPass);
-
-        const debug = this.debug.ui.addFolder('bloom');
-        debug.add(bloomPass, 'threshold', 0.0, 1);
-        debug.add(bloomPass, 'strength', 0.0, 10);
-        debug.add(bloomPass, 'radius', 0.0, 1);
-
-        const mergePass = new ShaderPass(MergeShader);
-        mergePass.uniforms.uImage.value = this.composer2.writeBuffer.texture;
-        this.composer2.renderToScreen = false;
-        this.mainComposer.addPass(mergePass);
-
-        // const fxaa =
+        this.view = new View();
+        this.gray = new Gray();
+        this.edge1 = new Edge(new THREE.Vector3(0, 0, 1));
+        this.edge2 = new Edge(new THREE.Vector3(1, 0, 0));
+        this.merge = new Merge();
+        this.fxaa = new FXAA();
+        this.gauss = new Gauss();
     }
     update() {
         this.renderer.clear();
@@ -128,22 +80,50 @@ export default class World {
         this.cone.update();
         this.box.on();
         this.cone.off();
-        this.renderer.render(this.scene, this.camera);
-        // this.renderer.setRenderTarget(null);
-        this.composer2.render();
-        // this.composer2.render();
-        // this.renderer.setRenderTarget(null);
+        this.renderer.render(this.scene, this.camera); // render scene
 
+        this.gray.render(this.target1, this.mrt.texture[0]);
+        this.edge1.render(this.target2, this.target1.texture);
+        this.merge.render(
+            this.target1,
+            this.mrt.texture[1],
+            this.target2.texture
+        );
+        this.fxaa.render(this.target3, this.target1.texture);
+
+        // second draw
         this.renderer.clear();
-
+        this.renderer.setRenderTarget(this.mrt);
         this.box.off();
         this.cone.on();
-        this.renderer.render(this.scene, this.camera);
-        this.renderer.setRenderTarget(null);
-        this.mainComposer.render();
-        // this.sample.update();
+        this.renderer.render(this.scene, this.camera); // render scene
+
+        this.gray.render(this.target1, this.mrt.texture[0]);
+        this.edge2.render(this.target2, this.target1.texture);
+        this.merge.render(
+            this.target1,
+            this.mrt.texture[1],
+            this.target2.texture
+        );
+        this.fxaa.render(this.target2, this.target1.texture);
+
+        this.merge.render(
+            this.target1,
+            this.target2.texture,
+            this.target3.texture
+        );
+        this.view.render(this.target1.texture);
+        this.gauss.render(this.target2, this.target1.texture);
+
+        this.merge.render(
+            this.target3,
+            this.target1.texture,
+            this.target2.texture
+        );
+
+        this.view.render(this.target3.texture);
     }
     resize(width: number, height: number) {
-        this.composer2.setSize(width, height);
+        console.log(width, height);
     }
 }

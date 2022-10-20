@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import Debug from './Debug';
 import World from './World';
 
@@ -10,8 +8,8 @@ let webgl: WebGL | null;
 export default class WebGL {
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
+    oCamera: THREE.OrthographicCamera;
     renderer: THREE.WebGLRenderer;
-    composer: EffectComposer;
 
     world: World;
 
@@ -44,6 +42,10 @@ export default class WebGL {
         );
         this.camera.position.set(0, 0, 3);
 
+        this.oCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 10);
+        this.oCamera.position.set(0, 0, 10);
+        this.oCamera.lookAt(0, 0, 0);
+
         // renderer
         this.renderer = new THREE.WebGLRenderer({
             canvas: canvas,
@@ -55,13 +57,6 @@ export default class WebGL {
         this.renderer.toneMappingExposure = 2;
         this.renderer.outputEncoding = THREE.sRGBEncoding;
 
-        // post process
-        this.composer = new EffectComposer(this.renderer);
-        this.composer.setSize(this.size.width, this.size.height);
-        this.composer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-        // const renderPass = new RenderPass(this.scene, this.camera);
-        // this.composer.addPass(renderPass);
-
         // World
         this.world = new World();
 
@@ -72,7 +67,6 @@ export default class WebGL {
     render() {
         this.debug.begin();
         this.world.update();
-        // this.composer.render();
         this.debug.end();
         requestAnimationFrame(() => this.render());
     }
@@ -83,7 +77,6 @@ export default class WebGL {
         };
         this.camera.aspect = this.size.width / this.size.height;
         this.camera.updateProjectionMatrix();
-        this.composer.setSize(this.size.width, this.size.height);
         this.renderer.setSize(this.size.width, this.size.height);
         this.world.resize(this.size.width, this.size.height);
     }
