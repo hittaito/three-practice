@@ -1,28 +1,26 @@
 import * as THREE from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-
-import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
 import SampleModel from './models/sampleModel';
+import { FXAA } from './postprocess/FXAA';
 import WebGL from './Webgl';
 
 export default class World {
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
     renderer: THREE.WebGLRenderer;
-
-    composer: EffectComposer;
+    target: THREE.WebGLRenderTarget;
 
     sample: SampleModel;
+
+    fxaa: FXAA;
     constructor() {
         const webgl = new WebGL();
         this.scene = webgl.scene;
         this.camera = webgl.camera;
         this.renderer = webgl.renderer;
-        this.composer = webgl.composer;
-        const geom = new THREE.ConeGeometry(1.6, 7.5, 3);
-        console.log(geom);
-        console.log(geom.getAttribute('position'));
-        console.log(geom.getIndex());
+        this.target = new THREE.WebGLRenderTarget(
+            webgl.size.width * Math.min(2, window.devicePixelRatio),
+            webgl.size.height * Math.min(2, window.devicePixelRatio)
+        );
 
         this.setUp();
     }
@@ -30,14 +28,14 @@ export default class World {
         this.sample = new SampleModel();
 
         // post process
-        const smaaPass = new SMAAPass(
-            window.innerWidth * this.renderer.getPixelRatio(),
-            window.innerHeight * this.renderer.getPixelRatio()
-        );
-        this.composer.addPass(smaaPass);
+        this.fxaa = new FXAA();
     }
     update() {
         this.sample.update();
+        this.renderer.setRenderTarget(this.target);
+        this.renderer.render(this.scene, this.camera);
+
+        this.fxaa.render(null, this.target.texture);
     }
     resize() {}
 }
