@@ -11,3 +11,7 @@ three.js 練習用
 | day5 | transparent     |
 | day6 | fresnel         |
 | day7 | bloom           |
+| day8 | quatanion       |
+| day9 | WIP             |
+
+blur -> line で gpgpu
