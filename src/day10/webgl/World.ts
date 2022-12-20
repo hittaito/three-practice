@@ -133,8 +133,8 @@ export default class World {
         this.renderer.render(this.caustics.mesh, this.topCamera);
 
         this.renderer.setRenderTarget(null);
-        this.renderer.render(this.scene, this.camera);
-        // this.fxaa.render(null, this.caustics.target.texture);
+        // this.renderer.render(this.scene, this.camera);
+        this.fxaa.render(null, this.caustics.target.texture);
         // this.viewer.render(this.target.texture);
         // this.depthViewer.render(this.target);
 

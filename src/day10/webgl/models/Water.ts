@@ -7,7 +7,7 @@ export default class Water {
     mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>;
     constructor() {
         const webgl = new WebGL();
-        this.scene = webgl.scene;
+        this.scene = webgl.scene.topView;
 
         const geom = new THREE.PlaneGeometry(2, 2, 512, 512);
         const mat = new THREE.ShaderMaterial({
