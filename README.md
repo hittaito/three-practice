@@ -2,16 +2,18 @@
 
 three.js 練習用
 
-| dir  | explain         |
-| :--- | --------------- |
-| day1 | スクローラー    |
-| day2 | MRT/SDF Texture |
-| day3 | gaussian blur   |
-| day4 | line            |
-| day5 | transparent     |
-| day6 | fresnel         |
-| day7 | bloom           |
-| day8 | quatanion       |
-| day9 | WIP             |
+| dir   | explain         |
+| :---- | --------------- |
+| day1  | スクローラー    |
+| day2  | MRT/SDF Texture |
+| day3  | gaussian blur   |
+| day4  | line            |
+| day5  | transparent     |
+| day6  | fresnel         |
+| day7  | bloom           |
+| day8  | quatanion       |
+| day9  | WIP             |
+| day10 | WIP caustics    |
+| day11 | boids           |
 
 blur -> line で gpgpu
