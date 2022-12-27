@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import SampleModel from './models/sampleModel';
-import { FXAA } from './postprocess/FXAA';
+import { FXAA } from './process/FXAA';
 import WebGL from './Webgl';
 
 export default class World {
