@@ -7,27 +7,22 @@ import WebGL from '../Webgl';
 export class Instance {
     scene: THREE.Scene;
     mesh: THREE.Mesh<THREE.InstancedBufferGeometry, THREE.ShaderMaterial>;
-    constructor(count: number) {
+    constructor(count: number, history: number) {
         const webgl = new WebGL();
         this.scene = webgl.scene;
-        const instGeom = new THREE.ConeGeometry(0.5, 2, 16);
+        const instGeom = new THREE.ConeGeometry(0.1, 0.4, 16);
         const geom = new THREE.InstancedBufferGeometry();
         geom.instanceCount = count;
         geom.index = instGeom.index;
         geom.attributes = instGeom.attributes;
 
-        const SIZE = Math.sqrt(count);
-
-        const idArray = new Float32Array(count * 2);
+        const idArray = new Float32Array(count);
         let id = 0;
-        for (let x = 0; x < SIZE; x++) {
-            for (let y = 0; y < SIZE; y++) {
-                idArray[id * 2 + 0] = x;
-                idArray[id * 2 + 1] = y;
-                id++;
-            }
+        for (let x = 0; x < count; x++) {
+            idArray[id] = x;
+            id++;
         }
-        geom.setAttribute('id', new THREE.InstancedBufferAttribute(idArray, 2));
+        geom.setAttribute('id', new THREE.InstancedBufferAttribute(idArray, 1));
 
         const mat = new ShaderMaterial({
             vertexShader: vert,

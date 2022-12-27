@@ -2,7 +2,8 @@ uniform sampler2D uPosition;
 uniform sampler2D uVelocity;
 
 // instanced
-in vec2 id;
+in float id;
+in float historyId;
 
 vec4 rotQ(vec3 axis, float rad) {
   vec3 n = normalize(axis);
@@ -25,7 +26,7 @@ vec3 appQ(vec3 v, vec4 q) {
 }
 
 void main() {
-  ivec2 uv = ivec2(id);
+  ivec2 uv = ivec2(id, 0);
   vec3 pos = texelFetch(uPosition, uv, 0).xyz;
 
   vec3 dir = normalize(texelFetch(uVelocity, uv, 0).xyz);

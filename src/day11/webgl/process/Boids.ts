@@ -12,17 +12,16 @@ export class Boids {
     camera: THREE.OrthographicCamera;
     mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>;
     flag = 0;
-    constructor(count: number) {
-        const SIZE = Math.sqrt(count);
+    constructor(count: number, history: number) {
         const webgl = new WebGL();
         const debug = webgl.debug;
         this.camera = webgl.oCamera;
         this.renderer = webgl.renderer;
         this.targets = [
-            new THREE.WebGLMultipleRenderTargets(SIZE, SIZE, 2, {
+            new THREE.WebGLMultipleRenderTargets(count, history, 2, {
                 type: THREE.FloatType,
             }),
-            new THREE.WebGLMultipleRenderTargets(SIZE, SIZE, 2, {
+            new THREE.WebGLMultipleRenderTargets(count, history, 2, {
                 type: FloatType,
             }),
         ];
@@ -44,32 +43,37 @@ export class Boids {
             glslVersion: THREE.GLSL3,
             uniforms: {
                 uTime: { value: 0 },
+                uLimit: { value: 0.6 },
                 uPosition: { value: null },
                 uVelocity: { value: null },
-                uSeparate: { value: 0.2 },
-                uAlign: { value: 0.2 },
-                uCohens: { value: 0.2 },
-                uForce: { value: 0.2 },
+                uSeparate: { value: 0.3 },
+                uArea: { value: 0.05 },
+                uSepareteForce: { value: 0.2 },
+                uCohesionForce: { value: 0.2 },
+                uAlignForce: { value: 0.8 },
             },
         });
         this.mesh = new THREE.Mesh(geom, updateMat);
 
         if (debug.ui) {
             debug.ui
-                .add(updateMat.uniforms.uTime, 'value', 0, 100, 0.1)
-                .name('test');
+                .add(updateMat.uniforms.uLimit, 'value', 0, 3, 0.01)
+                .name('limit');
             debug.ui
                 .add(updateMat.uniforms.uSeparate, 'value', 0, 2, 0.001)
+                .name('separateArea');
+            debug.ui
+                .add(updateMat.uniforms.uArea, 'value', 0, 2, 0.001)
+                .name('area');
+            debug.ui
+                .add(updateMat.uniforms.uSepareteForce, 'value', 0, 2, 0.001)
                 .name('separate');
             debug.ui
-                .add(updateMat.uniforms.uAlign, 'value', 0, 2, 0.001)
+                .add(updateMat.uniforms.uCohesionForce, 'value', 0, 3, 0.001)
+                .name('chohesion');
+            debug.ui
+                .add(updateMat.uniforms.uAlignForce, 'value', 0, 3, 0.001)
                 .name('align');
-            debug.ui
-                .add(updateMat.uniforms.uCohens, 'value', 0, 2, 0.001)
-                .name('cohens');
-            debug.ui
-                .add(updateMat.uniforms.uForce, 'value', 0, 3, 0.001)
-                .name('force');
         }
     }
     get readBuffer() {

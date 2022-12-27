@@ -5,7 +5,8 @@ import { Boids } from './process/Boids';
 import { FXAA } from './process/FXAA';
 import WebGL from './Webgl';
 
-const SIZE = 32;
+const COUNT = 100;
+const HISTORY = 10;
 
 export default class World {
     scene: THREE.Scene;
@@ -33,9 +34,9 @@ export default class World {
     setUp() {
         // model
         // this.sample = new SampleModel();
-        this.instance = new Instance(SIZE * SIZE);
+        this.instance = new Instance(COUNT, HISTORY);
         // process
-        this.boids = new Boids(SIZE * SIZE);
+        this.boids = new Boids(COUNT, HISTORY);
         this.fxaa = new FXAA();
     }
     update() {
