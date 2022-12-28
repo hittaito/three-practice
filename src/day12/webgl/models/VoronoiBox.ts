@@ -1,7 +1,8 @@
 import * as THREE from 'three';
-import { Body, Trimesh } from 'cannon-es';
+import { Body } from 'cannon-es';
 import { Delaunay, Voronoi } from 'd3-delaunay';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
+import { threeToCannon, ShapeType } from 'three-to-cannon';
 import WebGL from '../Webgl';
 const WIDTH = 3;
 const HEIGHT = 3;
@@ -37,9 +38,16 @@ export default class VoronoiBox {
             const first = polygon.shift()!;
             tShape.moveTo(first[0], first[1]);
 
+            let x = 0;
+            let y = 0;
             polygon.forEach((point) => {
                 tShape.lineTo(point[0], point[1]);
+                x += point[0];
+                y += point[1];
             });
+
+            x /= polygon.length;
+            y /= polygon.length;
             const excludeGeom = new THREE.ExtrudeGeometry(tShape, {
                 steps: 1,
                 depth: 0.1,
@@ -50,9 +58,9 @@ export default class VoronoiBox {
             for (let i = 0; i < position.length; i += 3) {
                 points.push(
                     new THREE.Vector3(
-                        position[i],
-                        position[i + 1],
-                        position[i + 2]
+                        position[i] - x,
+                        position[i + 2],
+                        position[i + 1] - y
                     )
                 );
             }
@@ -66,14 +74,17 @@ export default class VoronoiBox {
                 wireframe: false,
             });
             const mesh = new THREE.Mesh(geom, mat);
-            // mesh.rotateX(-Math.PI * 0.5);
+            mesh.position.x += x;
+            mesh.position.z += y;
             this.scene.add(mesh);
 
-            console.log(geom);
-            const shape = this.CreateTrimesh(geom);
+            // const shape = threeToCannon(mesh, { type: ShapeType.HULL })!.shape; // too heavy
+            const shape = threeToCannon(mesh)!.shape;
 
             const body = new Body({ mass: 1 });
             body.addShape(shape);
+            body.angularVelocity.set(3, 2, y);
+            body.angularDamping = 0.8;
             webgl.physics.addBody(body);
             this.items.push({ mesh, body });
         });
@@ -108,17 +119,6 @@ export default class VoronoiBox {
                 item.mesh.quaternion.w
             );
         });
-    }
-    CreateTrimesh(geometry: THREE.BufferGeometry): Trimesh {
-        let vertices;
-        if (geometry.index === null) {
-            vertices = geometry.attributes.position.array as number[];
-        } else {
-            vertices = geometry.clone().toNonIndexed().attributes.position
-                .array as number[];
-        }
-        const indices = Object.keys(vertices).map(Number);
-        return new Trimesh(vertices, indices);
     }
 
     renderVoronoi(voronoi: Voronoi<Delaunay.Point>) {
