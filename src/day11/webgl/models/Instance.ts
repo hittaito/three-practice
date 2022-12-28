@@ -29,9 +29,13 @@ export class Instance {
             fragmentShader: frag,
             glslVersion: THREE.GLSL3,
             uniforms: {
+                ...THREE.UniformsLib.lights,
                 uPosition: { value: null },
                 uVelocity: { value: null },
+                diffuse: { value: new THREE.Color(0xffffff) },
+                emissive: { value: new THREE.Color(0x000000) },
             },
+            lights: true,
         });
         this.mesh = new THREE.Mesh(geom, mat);
         this.scene.add(this.mesh);

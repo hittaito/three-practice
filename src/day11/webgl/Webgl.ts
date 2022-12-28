@@ -57,8 +57,8 @@ export default class WebGL {
         // World
         this.world = new World();
 
-        new OrbitControls(this.camera, canvas);
-
+        const ctrl = new OrbitControls(this.camera, canvas);
+        ctrl.enableZoom = false;
         this.render();
     }
     render() {
@@ -68,4 +68,7 @@ export default class WebGL {
         requestAnimationFrame(() => this.render());
     }
     resize() {}
+    onMouse(x: number, y: number) {
+        this.world.onMouse(x, y);
+    }
 }

@@ -5,6 +5,8 @@ uniform sampler2D uVelocity;
 in float id;
 in float historyId;
 
+out vec3 vNormal;
+
 vec4 rotQ(vec3 axis, float rad) {
   vec3 n = normalize(axis);
   float h = rad * .5;
@@ -35,6 +37,7 @@ void main() {
   float a =-acos(dot(dir,top));
   vec4 q = rotQ(c, a);
   vec3 newPos = appQ(position, q);
+  vNormal = appQ(normal, q);
 
 
   gl_Position = projectionMatrix*modelViewMatrix*vec4(pos+newPos, 1.);

@@ -35,6 +35,11 @@ export default class World {
         // model
         // this.sample = new SampleModel();
         this.instance = new Instance(COUNT, HISTORY);
+
+        // light
+        const light = new THREE.DirectionalLight(0x00ff00, 1);
+        light.position.y = 3;
+        this.scene.add(light);
         // process
         this.boids = new Boids(COUNT, HISTORY);
         this.fxaa = new FXAA();
@@ -50,4 +55,7 @@ export default class World {
         // this.fxaa.render(null, this.boids.readBuffer.texture[0]);
     }
     resize() {}
+    onMouse(x: number, y: number) {
+        this.boids.onMouse(x, y);
+    }
 }

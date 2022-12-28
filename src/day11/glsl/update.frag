@@ -5,6 +5,9 @@ uniform float uArea;
 uniform float uSepareteForce;
 uniform float uCohesionForce;
 uniform float uAlignForce;
+uniform vec2 uPointer;
+uniform float uPointerLimit;
+uniform float uPointerForce;
 
 uniform sampler2D uPosition;
 uniform sampler2D uVelocity;
@@ -26,7 +29,14 @@ void main(void) {
     pos = texelFetch(uPosition, uv, 0).xyz;
     vel = texelFetch(uVelocity, uv, 0).xyz;
 
-    vel = mix(vel, -normalize(pos), smoothstep(10., 15., length(pos)));
+    vel = mix(vel, -normalize(pos), smoothstep(6., 10., length(pos)));
+
+    // pointer
+    vec3 dir = vec3(uPointer, 0.) * 10. - vec3(pos.xy, 0.);
+    float dist = length(dir);
+    if (dist < uPointerLimit) {
+      vel -= normalize(dir) * uPointerForce;
+    }
 
     vec3 cohesion, separation, align;
     float nCohesion, nSeparation, nAlign;
@@ -50,9 +60,11 @@ void main(void) {
       align += otherVel;
       nAlign++;
     }
+    vec3 cohesDir = vec3(0);
     if (nCohesion > 0.) {
       cohesion/= nCohesion;
-    }vec3 cohesDir = cohesion - pos;
+      cohesDir = cohesion - pos;
+    }
 
     if (nAlign > 0.) {
       align /= nAlign;

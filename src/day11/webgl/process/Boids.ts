@@ -46,11 +46,15 @@ export class Boids {
                 uLimit: { value: 0.6 },
                 uPosition: { value: null },
                 uVelocity: { value: null },
-                uSeparate: { value: 0.3 },
+                uSeparate: { value: 0.6 },
                 uArea: { value: 0.05 },
                 uSepareteForce: { value: 0.2 },
                 uCohesionForce: { value: 0.2 },
-                uAlignForce: { value: 0.8 },
+                uAlignForce: { value: 2 },
+                uPointer: { value: new THREE.Vector2(1, 1) },
+                uPointerLimit: { value: 1.3 },
+                uPointerForce: { value: 2 },
+                uCamera: { value: this.camera.modelViewMatrix },
             },
         });
         this.mesh = new THREE.Mesh(geom, updateMat);
@@ -74,6 +78,12 @@ export class Boids {
             debug.ui
                 .add(updateMat.uniforms.uAlignForce, 'value', 0, 3, 0.001)
                 .name('align');
+            debug.ui
+                .add(updateMat.uniforms.uPointerLimit, 'value', 0, 3, 0.001)
+                .name('pointer area');
+            debug.ui
+                .add(updateMat.uniforms.uPointerForce, 'value', 0, 3, 0.001)
+                .name('pointer force');
         }
     }
     get readBuffer() {
@@ -93,5 +103,9 @@ export class Boids {
         this.renderer.render(this.mesh, this.camera);
         this.flag = 1 - this.flag;
         this.renderer.setRenderTarget(null);
+    }
+    onMouse(x: number, y: number) {
+        this.mesh.material.uniforms.uPointer.value.x = x;
+        this.mesh.material.uniforms.uPointer.value.y = y;
     }
 }
