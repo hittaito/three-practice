@@ -1,4 +1,4 @@
-var P=Object.defineProperty;var C=(i,e,t)=>e in i?P(i,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):i[e]=t;var n=(i,e,t)=>(C(i,typeof e!="symbol"?e+"":e,t),t);import{S as m,d as u,e as d,G as h,M as x,z as S,D as F,ab as V,ac as U,u as z,F as g,P as D,O as T,W as A,s as M}from"./three.module.89134fd5.js";import{O as R}from"./OrbitControls.4f0c683d.js";import"./stats.min.46d05fb3.js";class j{constructor(){n(this,"ui");n(this,"stats")}begin(){this.stats&&this.stats.begin()}end(){this.stats&&this.stats.end()}}var w=`out vec2 vUv;
+var P=Object.defineProperty;var C=(i,e,t)=>e in i?P(i,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):i[e]=t;var n=(i,e,t)=>(C(i,typeof e!="symbol"?e+"":e,t),t);import{S as m,d as u,e as d,G as h,M as x,z as S,D as F,ad as V,ae as U,u as z,F as g,P as D,O as T,W as A,s as M}from"./three.module.d3d6ea96.js";import{O as R}from"./OrbitControls.3e08d4ed.js";import"./stats.min.46d05fb3.js";class j{constructor(){n(this,"ui");n(this,"stats")}begin(){this.stats&&this.stats.begin()}end(){this.stats&&this.stats.end()}}var w=`out vec2 vUv;
 
 void main() {
   vUv = uv;

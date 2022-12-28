@@ -1,4 +1,4 @@
-var m=Object.defineProperty;var c=(o,e,t)=>e in o?m(o,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):o[e]=t;var n=(o,e,t)=>(c(o,typeof e!="symbol"?e+"":e,t),t);import{S as p,P as u,W as v,R as g,D as f,G as M,a as I,T as w,b as P,M as x}from"./three.module.89134fd5.js";var S=`precision highp float;
+var m=Object.defineProperty;var c=(o,e,t)=>e in o?m(o,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):o[e]=t;var n=(o,e,t)=>(c(o,typeof e!="symbol"?e+"":e,t),t);import{S as p,P as u,W as v,R as g,D as f,G as M,a as I,T as w,b as P,M as x}from"./three.module.d3d6ea96.js";var S=`precision highp float;
 
 uniform sampler2D img;
 uniform float alpha;

@@ -1,4 +1,4 @@
-var a=Object.defineProperty;var o=(n,e,t)=>e in n?a(n,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):n[e]=t;var s=(n,e,t)=>(o(n,typeof e!="symbol"?e+"":e,t),t);import{B as c,e as m,G as h,M as d,S as v,P as q,W as l,s as w}from"./three.module.89134fd5.js";import{O as u}from"./OrbitControls.4f0c683d.js";import{S as p,E as z,R as x}from"./SMAAPass.54cea879.js";import"./stats.min.46d05fb3.js";class y{constructor(){s(this,"ui");s(this,"stats")}begin(){this.stats&&this.stats.begin()}end(){this.stats&&this.stats.end()}}var g=`in vec2 vUv;
+var a=Object.defineProperty;var o=(n,e,t)=>e in n?a(n,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):n[e]=t;var s=(n,e,t)=>(o(n,typeof e!="symbol"?e+"":e,t),t);import{B as c,e as m,G as h,M as d,S as v,P as q,W as l,s as w}from"./three.module.d3d6ea96.js";import{O as u}from"./OrbitControls.3e08d4ed.js";import{S as p,E as z,R as x}from"./SMAAPass.cf713706.js";import"./stats.min.46d05fb3.js";class y{constructor(){s(this,"ui");s(this,"stats")}begin(){this.stats&&this.stats.begin()}end(){this.stats&&this.stats.end()}}var g=`in vec2 vUv;
 
 out vec4 oColor;
 
