@@ -15,6 +15,7 @@ export default defineConfig({
     root: 'src/',
     plugins: [glsl()],
     publicDir: '../assets',
+    base: '/three-practice/',
     build: {
         outDir: '../dist',
         rollupOptions: {
