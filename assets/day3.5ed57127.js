@@ -1,4 +1,4 @@
-var d=Object.defineProperty;var g=(t,e,n)=>e in t?d(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n;var i=(t,e,n)=>(g(t,typeof e!="symbol"?e+"":e,n),n);import{S as c,P as x,W as p,c as f,j as w,i as S,B as z,a3 as b,M as m,O as C,F as T,N as h,d as F,R as v,G as l}from"./three.module.d3d6ea96.js";import{O as M}from"./OrbitControls.3e08d4ed.js";var u=`uniform mat4 modelViewMatrix;
+var d=Object.defineProperty;var g=(t,e,n)=>e in t?d(t,e,{enumerable:!0,configurable:!0,writable:!0,value:n}):t[e]=n;var i=(t,e,n)=>(g(t,typeof e!="symbol"?e+"":e,n),n);import{S as c,P as x,W as p,c as f,j as w,i as S,B as z,a5 as b,M as m,O as C,F as T,N as h,d as F,R as v,G as l}from"./three.module.ae74702b.js";import{O as M}from"./OrbitControls.9335f66a.js";var u=`uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 
 in vec3 position;
