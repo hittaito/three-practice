@@ -14,6 +14,7 @@ export default class WebGL {
     world: World;
 
     size: { width: number; height: number };
+    resizeFn: Array<(width: number, height: number) => void> = [];
     debug: Debug;
     constructor(canvas?: HTMLCanvasElement) {
         if (webgl) {
@@ -26,8 +27,8 @@ export default class WebGL {
     init(canvas: HTMLCanvasElement) {
         this.debug = new Debug();
         this.size = {
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: window.innerWidth * Math.min(2, window.devicePixelRatio),
+            height: window.innerHeight * Math.min(2, window.devicePixelRatio),
         };
 
         // scene
@@ -38,7 +39,7 @@ export default class WebGL {
             45,
             this.size.width / this.size.height,
             0.1,
-            100
+            80
         );
         this.camera.position.set(0, 0, 3);
 
@@ -67,5 +68,15 @@ export default class WebGL {
         this.debug.end();
         requestAnimationFrame(() => this.render(time + 1));
     }
-    resize() {}
+    resize() {
+        this.size = {
+            width: window.innerWidth * Math.min(2, window.devicePixelRatio),
+            height: window.innerHeight * Math.min(2, window.devicePixelRatio),
+        };
+        this.camera.aspect = this.size.width / this.size.height;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(this.size.width, this.size.height);
+        this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+        this.resizeFn.forEach((fn) => fn(this.size.width, this.size.height));
+    }
 }

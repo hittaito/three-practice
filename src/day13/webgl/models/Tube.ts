@@ -4,9 +4,7 @@ import frag from '../../glsl/main.frag';
 import vert from '../../glsl/main.vert';
 import WebGL from '../Webgl';
 
-const LOOP = 1000;
-
-// https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_extrude_splines.html
+const LOOP = 1500;
 
 export default class Tube {
     scene: THREE.Scene;
@@ -35,6 +33,12 @@ export default class Tube {
             glslVersion: THREE.GLSL3,
             fragmentShader: frag,
             vertexShader: vert,
+            uniforms: {
+                uInner: { value: null },
+                uCameraPos: { value: null },
+                uNear: { value: 0 },
+                uFar: { value: 0 },
+            },
             side: THREE.DoubleSide,
         });
 
@@ -49,7 +53,11 @@ export default class Tube {
             target: new THREE.Vector3(0, 0, 0),
         };
     }
+    setInner(texture: THREE.Texture) {
+        this.mesh.material.uniforms.uInner.value = texture;
+    }
     updateCamera(time: number) {
+        // https://github.com/mrdoob/three.js/blob/master/examples/webgl_geometry_extrude_splines.html
         const step = (time % LOOP) / LOOP;
 
         this.curve.getPointAt(step, this.vec.position);
@@ -83,5 +91,10 @@ export default class Tube {
             this.vec.normal
         );
         this.camera.quaternion.setFromRotationMatrix(this.camera.matrix);
+
+        // update camera uniform
+        this.mesh.material.uniforms.uCameraPos.value = this.camera.position;
+        this.mesh.material.uniforms.uNear.value = this.camera.near;
+        this.mesh.material.uniforms.uFar.value = this.camera.far;
     }
 }
