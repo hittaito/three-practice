@@ -55,12 +55,12 @@ export default class World {
         // scene2
         const cubeTextureLoader = new THREE.CubeTextureLoader();
         const envMap = cubeTextureLoader.load([
-            '/envmap/px.jpg',
-            '/envmap/nx.jpg',
-            '/envmap/py.jpg',
-            '/envmap/ny.jpg',
-            '/envmap/pz.jpg',
-            '/envmap/nz.jpg',
+            '../envmap/px.jpg',
+            '../envmap/nx.jpg',
+            '../envmap/py.jpg',
+            '../envmap/ny.jpg',
+            '../envmap/pz.jpg',
+            '../envmap/nz.jpg',
         ]);
         envMap.encoding = THREE.sRGBEncoding;
         this.scene2.background = envMap;

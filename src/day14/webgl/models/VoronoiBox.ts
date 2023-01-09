@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import vert from '../../glsl/voronoi.vert';
 import frag from '../../glsl/voronoi.frag';
-import gsap from 'gsap';
 import { Body } from 'cannon-es';
 import { Delaunay, Voronoi } from 'd3-delaunay';
 import { ShapeType, threeToCannon } from 'three-to-cannon';
@@ -133,7 +132,6 @@ export default class VoronoiBox {
         this.items.forEach((item) => {
             item.body.velocity.setZero();
             const pos = item.mesh.position;
-            console.log(pos.x - x, pos.y - y);
             const m = 100;
 
             item.body.angularDamping = 1;
