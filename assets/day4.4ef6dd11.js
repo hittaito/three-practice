@@ -1,4 +1,4 @@
-var y=Object.defineProperty;var f=(o,r,t)=>r in o?y(o,r,{enumerable:!0,configurable:!0,writable:!0,value:t}):o[r]=t;var c=(o,r,t)=>(f(o,typeof r!="symbol"?r+"":r,t),t);import{S as u,P as M,W as A,R as D,G as z,M as b,y as S,K as a}from"./three.module.ae74702b.js";import{O as G}from"./OrbitControls.9335f66a.js";var W=`precision highp float;
+var y=Object.defineProperty;var f=(o,r,t)=>r in o?y(o,r,{enumerable:!0,configurable:!0,writable:!0,value:t}):o[r]=t;var c=(o,r,t)=>(f(o,typeof r!="symbol"?r+"":r,t),t);import{S as u,P as M,W as A,R as D,G as z,M as b,y as S,a1 as a}from"./three.module.da3d5bd6.js";import{O as G}from"./OrbitControls.33791f63.js";var W=`precision highp float;
 
 out vec4 oColor;
 
