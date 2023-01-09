@@ -26,8 +26,8 @@ export default class WebGL {
     init(canvas: HTMLCanvasElement) {
         this.debug = new Debug();
         this.size = {
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: window.innerWidth * Math.min(2, window.devicePixelRatio),
+            height: window.innerHeight * Math.min(2, window.devicePixelRatio),
         };
 
         // scene

@@ -18,8 +18,8 @@ export default class World {
         this.camera = webgl.camera;
         this.renderer = webgl.renderer;
         this.target = new THREE.WebGLRenderTarget(
-            webgl.size.width * Math.min(2, window.devicePixelRatio),
-            webgl.size.height * Math.min(2, window.devicePixelRatio)
+            webgl.size.width,
+            webgl.size.height
         );
 
         this.setUp();
