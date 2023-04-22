@@ -1,4 +1,4 @@
-var x=Object.defineProperty;var C=(s,e,t)=>e in s?x(s,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):s[e]=t;var n=(s,e,t)=>(C(s,typeof e!="symbol"?e+"":e,t),t);import{S as r,P as w,W as D,d as f,R as l,G as c,M as m,O as S,u as d,N as v,F,c as y,a5 as U}from"./three.module.da3d5bd6.js";import{w as H}from"./webfontloader.8f02c34e.js";var z=`precision highp float;
+var x=Object.defineProperty;var C=(s,e,t)=>e in s?x(s,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):s[e]=t;var n=(s,e,t)=>(C(s,typeof e!="symbol"?e+"":e,t),t);import{S as r,P as w,W as D,d as f,R as l,G as c,M as m,O as S,u as d,N as v,F,c as y,aa as U}from"./three.module.9352233f.js";import{w as H}from"./webfontloader.8f02c34e.js";var z=`precision highp float;
 
 uniform sampler2D img;
 

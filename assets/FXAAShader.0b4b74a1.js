@@ -1,4 +1,4 @@
-import{V as e}from"./three.module.da3d5bd6.js";const t={uniforms:{tDiffuse:{value:null},resolution:{value:new e(1/1024,1/512)}},vertexShader:`
+import{V as e}from"./three.module.9352233f.js";const t={uniforms:{tDiffuse:{value:null},resolution:{value:new e(1/1024,1/512)}},vertexShader:`
 
 		varying vec2 vUv;
 
