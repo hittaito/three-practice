@@ -55,8 +55,9 @@ class Main {
 class GaussEffect {
     buffers: THREE.WebGLRenderTarget[];
     camera: THREE.OrthographicCamera;
-    scene1: THREE.Scene;
-    scene2: THREE.Scene;
+    mesh1: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
+    mesh2: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial>;
+    active = 0;
 
     m1: THREE.RawShaderMaterial;
     m2: THREE.RawShaderMaterial;
@@ -74,9 +75,6 @@ class GaussEffect {
         buffer.texture.magFilter = THREE.NearestFilter;
         this.buffers = [buffer, buffer.clone()];
 
-        this.scene1 = new THREE.Scene();
-        this.scene2 = new THREE.Scene();
-
         const g = new THREE.PlaneGeometry(2, 2);
         this.m1 = new THREE.RawShaderMaterial({
             vertexShader: cVert,
@@ -86,7 +84,7 @@ class GaussEffect {
             },
             glslVersion: THREE.GLSL3,
         });
-        this.scene1.add(new THREE.Mesh(g, this.m1));
+        this.mesh1 = new THREE.Mesh(g, this.m1);
 
         this.m2 = new THREE.RawShaderMaterial({
             vertexShader: cVert,
@@ -98,29 +96,28 @@ class GaussEffect {
             },
             glslVersion: THREE.GLSL3,
         });
-        this.scene2.add(new THREE.Mesh(g, this.m2));
+        this.mesh2 = new THREE.Mesh(g, this.m2);
     }
     render(
         renderer: THREE.WebGLRenderer,
         texture: THREE.Texture,
         target: THREE.WebGLRenderTarget | null
     ) {
-        renderer.setRenderTarget(this.buffers[1]);
+        renderer.setRenderTarget(this.buffers[this.active]);
         this.m1.uniforms.img.value = texture;
-        renderer.render(this.scene1, this.camera);
+        renderer.render(this.mesh1, this.camera);
 
-        let idx = 0;
         for (let i = 0; i < 8; i++) {
-            const idx = i % 2;
-            renderer.setRenderTarget(this.buffers[idx]);
-            this.m2.uniforms.img.value = this.buffers[1 - idx].texture;
-            this.m2.uniforms.horizontal.value = idx === 0;
-            renderer.render(this.scene2, this.camera);
+            renderer.setRenderTarget(this.buffers[1 - this.active]);
+            this.m2.uniforms.img.value = this.buffers[this.active].texture;
+            this.m2.uniforms.horizontal.value = this.active === 0;
+            renderer.render(this.mesh2, this.camera);
+            this.active = 1 - this.active;
         }
 
         renderer.setRenderTarget(target);
-        this.m1.uniforms.img.value = this.buffers[idx].texture;
-        renderer.render(this.scene1, this.camera);
+        this.m1.uniforms.img.value = this.buffers[this.active].texture;
+        renderer.render(this.mesh1, this.camera);
     }
 }
 
