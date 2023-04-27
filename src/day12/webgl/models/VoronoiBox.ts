@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Body } from 'cannon-es';
 import { Delaunay, Voronoi } from 'd3-delaunay';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
-import { threeToCannon, ShapeType } from 'three-to-cannon';
+import { threeToCannon } from 'three-to-cannon';
 import WebGL from '../Webgl';
 const WIDTH = 3;
 const HEIGHT = 3;
